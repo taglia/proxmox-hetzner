@@ -124,7 +124,7 @@ make_answer_toml() {
 [disk-setup]
     filesystem = "zfs"
     zfs.raid = "raid1"
-    disk_list = ["/dev/vda", "/dev/vdb"]
+    disk_list = ["/dev/vda", "/dev/vdb", "/dev/vdc", "/dev/vdd"]
 
 EOF
     echo -e "${CLR_GREEN}answer.toml created.${CLR_RESET}"
@@ -163,6 +163,8 @@ install_proxmox() {
         -boot d -cdrom ./pve-autoinstall.iso \
         -drive file=/dev/nvme0n1,format=raw,media=disk,if=virtio \
         -drive file=/dev/nvme1n1,format=raw,media=disk,if=virtio \
+        -drive file=/dev/nvme2n1,format=raw,media=disk,if=virtio \
+        -drive file=/dev/nvme3n1,format=raw,media=disk,if=virtio \
         -vnc :0,password=on -monitor stdio -no-reboot
 }
 
@@ -185,6 +187,8 @@ boot_proxmox_with_port_forwarding() {
         -smp 4 -m 4096 \
         -drive file=/dev/nvme0n1,format=raw,media=disk,if=virtio \
         -drive file=/dev/nvme1n1,format=raw,media=disk,if=virtio \
+        -drive file=/dev/nvme2n1,format=raw,media=disk,if=virtio \
+        -drive file=/dev/nvme3n1,format=raw,media=disk,if=virtio \
         > qemu_output.log 2>&1 &
     
     QEMU_PID=$!
